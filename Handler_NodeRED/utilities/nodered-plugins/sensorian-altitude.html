@@ -1,0 +1,28 @@
+<script type="text/javascript">
+	RED.nodes.registerType('sensorian-altitude', {
+		category: 'Sensorian',
+		color: '#aaaa66',
+		defaults: {
+			name: {value:""}
+		},
+		inputs:1,
+		outputs:1,
+		paletteLabel:'altitude',
+		icon:'22x22sensorian.png',
+		label: function() {
+			return this.name || "sensorian-altitude";
+		}
+	});
+</script>
+
+<script type="text/x-red" data-template-name="sensorian-altitude">
+	<div class="form-row">
+		<label for="node-input-name"><i class="icon-tag"></i> Name</label>
+		<input type="text" id="node-input-name" placeholder="Name">
+	</div>
+</script>
+
+<script type="text/x-red" data-help-name="sensorian-altitude">
+	<p>A simple node which displays the altitude above sea level
+	detected by the Sensorian</p>
+</script>

@@ -1,0 +1,1 @@
+[{"id":"e1c53dda.fb5128","type":"sensorian-led","name":"","x":333,"y":184,"z":"52e00fe2.961688","wires":[]},{"id":"35867f87.0822e","type":"sensorian-touchpad","name":"","x":135,"y":277,"z":"52e00fe2.961688","wires":[["e1c53dda.fb5128"]]}]

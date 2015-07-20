@@ -1,0 +1,29 @@
+<script type="text/javascript">
+	RED.nodes.registerType('sensorian-magnetometer', {
+		category: 'Sensorian',
+		color: '#e2d96e',
+		defaults: {
+			name: {value:""}
+		},
+		inputs:0,
+		outputs:1,
+		paletteLabel:'magnetometer',
+		icon:'22x22sensorian.png',
+		label: function() {
+			return this.name || "sensorian-magnetometer";
+		}
+	});
+</script>
+
+<script type="text/x-red" data-template-name="sensorian-magnetometer">
+	<div class="form-row">
+		<label for="node-input-name"><i class="icon-tag"></i> Name</label>
+		<input type="text" id="node-input-name" placeholder="Name">
+	</div>
+</script>
+
+<script type="text/x-red" data-help-name="sensorian-magnetometer">
+	<p>A simple node which triggers whenever the orientation of the
+	Sensorian changes. It sends a JSON tuple representing the 3
+	dimensions of the current orientation.</p>
+</script>

@@ -1,0 +1,34 @@
+<script type="text/javascript">
+	RED.nodes.registerType('sensorian-tft', {
+		category: 'Sensorian',
+		color: '#a6bbcf',
+		defaults: {
+			name: {value:""},
+			orientation: {value:"0"}
+		},
+		inputs:1,
+		outputs:0,
+		paletteLabel:'tft',
+		icon:'22x22sensorian.png',
+		label: function() {
+			return this.name || "sensorian-tft";
+		}
+	});
+</script>
+
+<script type="text/x-red" data-template-name="sensorian-tft">
+	<div class="form-row">
+		<label for="node-input-name"><i class="icon-tag"></i> Name</label>
+		<input type="text" id="node-input-name" placeholder="Name">
+		<label for="node-input-orientation"><i class="icon-tag"></i> Orientation</label>
+		<select id="node-input-orientation">
+			<option value="0">Portrait</option>
+			<option value="1">Landscape</option>
+		</select>
+	</div>
+</script>
+
+<script type="text/x-red" data-help-name="sensorian-tft">
+	<p>A simple node which displays whatever is sent to it on the
+	Sensorian TFT-LCD.</p>
+</script>

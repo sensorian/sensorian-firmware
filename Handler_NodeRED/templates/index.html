@@ -1,0 +1,257 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<title>Sensorian - Set time and alarms</title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<meta name="generator" content="Geany 0.21" />
+	
+	<style>
+		body
+		{
+			background-image: url("clouds.png");
+			background-size: 100%;
+			background-repeat: no-repeat;
+		}
+	</style>
+	
+	<script>
+		function setup_items()
+		{
+			var hours_input = document.getElementById("time_hour");
+			var minute_input = document.getElementById("time_minute");
+			var second_input = document.getElementById("time_second");
+			var month_input = document.getElementById("time_month");
+			var year_input = document.getElementById("time_year");
+			var day_input = document.getElementById("time_date");
+			
+			var date = new Date();
+			hours_input.value = date.getHours();
+			minute_input.value = date.getMinutes();
+			second_input.value = date.getSeconds();
+			month_input.value = month_input[date.getMonth()].value;
+			day_input.value = date.getDate();
+			year_input.value = date.getFullYear();		
+		}
+		
+		function configure_time_month(month_select)
+		{
+			console.log("reconfiguring month");
+			var day_input = document.getElementById("time_date");
+			var year_input = document.getElementById("time_year");
+			
+			//Sets the range of days for the month
+			if (month_select.value == "September")
+			{
+				day_input.max = "30";
+			}
+			else if (month_select.value == "April")
+			{
+				day_input.max = "30";
+			}
+			else if (month_select.value == "June")
+			{
+				day_input.max = "30";
+			}
+			else if (month_select.value == "November")
+			{
+				day_input.max = "30";
+			}
+			else if (month_select.value == "February")
+			{
+				if ((parseInt(year_input.value) % 4 == 0) && (parseInt(year_input.value) % 100 != 0))
+				{
+					day_input.max = "29";
+				}
+				else if (parseInt(year_input.value) % 400 == 0)
+				{
+					day_input.max = "29";
+				}
+				else
+				{
+					day_input.max = "28";
+				}
+			}
+			else
+			{
+				day_input.max = "31";
+			}	
+		}
+		
+		function configure_alarm_month(month_select)
+		{
+			console.log("reconfiguring month");
+			var day_input = document.getElementById("alarm_date");
+			var year_input = document.getElementById("alarm_year");
+			
+			//Sets the range of days for the month
+			if (month_select.value == "September")
+			{
+				day_input.max = "30";
+			}
+			else if (month_select.value == "April")
+			{
+				day_input.max = "30";
+			}
+			else if (month_select.value == "June")
+			{
+				day_input.max = "30";
+			}
+			else if (month_select.value == "November")
+			{
+				day_input.max = "30";
+			}
+			else if (month_select.value == "February")
+			{
+				if ((parseInt(year_input.value) % 4 == 0) && (parseInt(year_input.value) % 100 != 0))
+				{
+					day_input.max = "29";
+				}
+				else if (parseInt(year_input.value) % 400 == 0)
+				{
+					day_input.max = "29";
+				}
+				else
+				{
+					day_input.max = "28";
+				}
+			}
+			else
+			{
+				day_input.max = "31";
+			}	
+		}
+	</script>
+	
+</head>
+
+<body onload="setup_items()">
+	<form action="/time_upload" method="POST" id="time_form" name="time_form">
+		<table>
+			<tr>
+				<td>
+					HR
+				</td>
+				<td>
+					MIN
+				</td>
+				<td>
+					SEC
+				</td>
+			</tr>
+			
+			<tr>
+				<td>
+					<input type="number" min="0" max="23" id="time_hour" name="time_hour" value="0"></input>
+					:
+				</td>
+				<td>
+					<input type="number" min="0" max="59" id="time_minute" name="time_minute" value="0"></input>
+					:
+				</td>
+				<td>
+					<input type="number" min="0" max="59" id="time_second" name="time_second" value="0"></input>
+				</td>
+			</tr>
+		</table>
+		
+		<br/>
+		<select id="time_month" name="time_month" onchange="configure_time_month(this)">
+			<option value="1">January</option>
+			<option value="2">February</option>
+			<option value="3">March</option>
+			<option value="4">April</option>
+			<option value="5">May</option>
+			<option value="6">June</option>
+			<option value="7">July</option>
+			<option value="8">August</option>
+			<option value="9">September</option>
+			<option value="10">October</option>
+			<option value="11">November</option>
+			<option value="12">December</option>
+	
+		</select>
+		
+		<input type="number" min="1" max="28" value="1" id="time_date" name="time_date"></input>
+		
+		<input type="number" min="1970" max="4000" value="1970" id="time_year" name="time_year"></input>
+		
+		<input type="submit" value="Set Time"></input>
+		
+		<input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+	
+	</form>
+	
+	</br>
+	</br>
+	</br>
+	
+	<form action="/alarm_upload" method="POST" id="alarm_form" name="alarm_form">
+	
+	<table>
+		<tr>
+			<td>
+				HR
+			</td>
+			<td>
+				MIN
+			</td>
+			<td>
+				SEC
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="number" min="0" max="23" id="alarm_hour" name="alarm_hour" value="0"></input>
+				:
+			</td>
+			<td>
+				<input type="number" min="0" max="59" id="alarm_minute" name="alarm_minute" value="0"></input>
+				:
+			</td>
+			<td>
+				<input type="number" min="0" max="59" id="alarm_second" name="alarm_second" value="0"></input>
+			</td>
+		</tr>
+	</table>
+	
+	<br/>
+	<select id="alarm_month" name="alarm_month" onchange="configure_time_month(this)">
+		<option value="1">January</option>
+		<option value="2">February</option>
+		<option value="3">March</option>
+		<option value="4">April</option>
+		<option value="5">May</option>
+		<option value="6">June</option>
+		<option value="7">July</option>
+		<option value="8">August</option>
+		<option value="9">September</option>
+		<option value="10">October</option>
+		<option value="11">November</option>
+		<option value="12">December</option>
+
+	</select>
+	
+	<input type="number" min="1" max="28" value="1" id="alarm_date" name="alarm_date"></input>
+	
+	<input type="number" min="1970" max="4000" value="1970" id="alarm_year" name="alarm_year"></input>
+	
+	<select id="alarm_mode" name="alarm_mode">
+		<option value="0">Seconds Match</option>
+		<option value="1">Minutes Match</option>
+		<option value="2">Hours Match</option>
+		<option value="3">Weekday Match</option>
+		<option value="4">Date Match</option>
+		<option value="5">Full Date Match</option>
+	</select>
+	
+	<input type="submit" value="Set Alarm"></input>
+	
+	<input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+</form>
+	
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+<script type="text/javascript">
+	RED.nodes.registerType('sensorian-accelerometer', {
+		category: 'Sensorian',
+		color: '#3fadb5',
+		defaults: {
+			name: {value:""}
+		},
+		inputs:0,
+		outputs:1,
+		paletteLabel:'accelerometer',
+		icon:'22x22sensorian.png',
+		label: function() {
+			return this.name || "sensorian-accelerometer";
+		}
+	});
+</script>
+
+<script type="text/x-red" data-template-name="sensorian-accelerometer">
+	<div class="form-row">
+		<label for="node-input-name"><i class="icon-tag"></i> Name</label>
+		<input type="text" id="node-input-name" placeholder="Name">
+	</div>
+</script>
+
+<script type="text/x-red" data-help-name="sensorian-accelerometer">
+	<p>A simple node which triggers whenever the acceleration of the
+	Sensorian changes. It sends a JSON tuple representing the 3
+	dimensions of the current acceleration.</p>
+</script>

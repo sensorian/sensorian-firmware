@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<meta http-equiv="refresh" content="5" />
+   <head>
+      <title>{{ title }}</title>
+   </head>
+
+   	  <script>
+	   var t = {{ title |safe}};
+		console.log(t);
+	  </script>
+
+   <body>
+      <h1>Hello, World!</h1>
+      <h2>The date and time on the server is: {{ time }}</h2>
+   </body>
+</html>

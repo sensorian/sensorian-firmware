@@ -1,0 +1,1 @@
+[{"id":"547f4da8.06a344","type":"inject","name":"","topic":"","payload":"Hello Sensorian","payloadType":"string","repeat":"","crontab":"","once":false,"x":147,"y":112,"z":"52e00fe2.961688","wires":[["d2598be1.bdc058"]]},{"id":"d2598be1.bdc058","type":"sensorian-tft","name":"","orientation":"1","x":252,"y":208,"z":"52e00fe2.961688","wires":[]}]

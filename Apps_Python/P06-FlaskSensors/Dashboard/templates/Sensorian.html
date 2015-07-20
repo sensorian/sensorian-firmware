@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+	<meta charset="UTF-8">
+		<title>{{ Title }}</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> 
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/jquery.flot.resize.js"></script>
+
+		<script language="javascript" type="text/javascript" src="../static/jquery.js"></script>
+		<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="/js/flot/excanvas.min.js"></script><![endif]-->
+		<script type="text/javascript" src="../static/jquery.flot.js"></script>
+		<script type="text/javascript" src="../static/jquery.flot.time.js"></script>    
+		<script type="text/javascript" src="../static/jquery.flot.axislabels.js"></script>
+		
+		
+		<style type="text/css">
+			body{
+				padding-top: 70px;
+			}
+			
+		</style>
+	</head>
+
+	
+	<body>
+		<div class="container">
+			<div class="jumbotron">
+				<!-- <h1>Ambient Light Live data stream</h1> -->
+				<!-- <div id="flot-placeholder1" style="width:550px;height:300px; margin:10 auto"> </div> -->
+			
+			<!-- interactive chart -->
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <i class="fa fa-bar-chart-o"></i>
+                  <h3 class="box-title">Ambient Light sensor data</h3>
+                  <div class="box-tools pull-top">
+                    Real time
+                    <div class="btn-group" id="realtime" data-toggle="btn-toggle">
+                      <button type="button" class="btn btn-default btn-xs active" data-toggle="on">On</button>
+                      <button type="button" class="btn btn-default btn-xs" data-toggle="off">Off</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="box-body">
+                  <div id="flot-placeholder1" style="height: 300px;"></div>
+                </div><!-- /.box-body-->
+              </div><!-- /.box -->
+			  
+			</div>
+
+			
+			<div class="row">
+				<div class="col-xs-4">
+					<h2>Temperature</h2>
+					<p> {{ temperature|safe }} degrees Celcius.</p>
+				
+				</div>
+				<div class="col-xs-4">
+					<h2>Altitude</h2>
+					<p> {{altitude|safe}} metres above sea level.</p>
+					
+				</div>
+				<div class="col-xs-4">
+					<h2>Barometric Pressure</h2>
+					<p> {{pressure|safe }} Pa.</p>
+					
+				</div>
+				
+			</div>
+			<hr>
+			<div class="row">
+				<div class="col-xs-12">
+					<footer>
+						<p>&copy; Copyright 2015 Sensorian</p>
+					</footer>
+				</div>
+			</div>
+		</div>
+	
+	<script type="text/javascript" src="../static/sensors.js"></script>
+	</body>
+</html>                                		

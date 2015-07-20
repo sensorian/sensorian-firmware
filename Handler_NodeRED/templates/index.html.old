@@ -1,0 +1,29 @@
+<html>
+	<head>
+		<title>Sensorian RTCC Web Interface</title>
+	</head>
+	<body>
+		<form action="/time_upload" method="POST" id="time_form" name="time_form">
+			<input name="time_year" id="time_year"></input></br>
+			<input name="time_month" id="time_month"></input></br>
+			<input name="time_date" id="time_date"></input></br>
+			<input name="time_hour" id="time_hour"></input></br>
+			<input name="time_minute" id="time_minute"></input></br>
+			<input name="time_second" id="time_second"></input></br>
+			<input type="submit" value="Set Time"></input>
+		</form>
+		</br>
+		</br>
+		</br>
+		<form action="/alarm_upload" method="POST" id="alarm_form" name="alarm_form">
+			<input name="alarm_year" id="alarm_year"></input></br>
+			<input name="alarm_month" id="alarm_month"></input></br>
+			<input name="alarm_date" id="alarm_date"></input></br>
+			<input name="alarm_hour" id="alarm_hour"></input></br>
+			<input name="alarm_minute" id="alarm_minute"></input></br>
+			<input name="alarm_second" id="alarm_second"></input></br>
+			<input name="alarm_mode" id="alarm_mode"></input></br>
+			<input type="submit" value="Alarm"></input>
+		</form>
+	</body>
+</html>
