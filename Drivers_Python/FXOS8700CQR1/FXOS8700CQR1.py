@@ -1,11 +1,11 @@
 #!/usr/bin/python
 
-"""
+
 __author__ = "D.Qendri"
 __copyright__ = "Copyright 2015 Sensorian"
 __license__ = "GPL V3"
 __version__ = "1.0"
-"""
+
 
 import math
 import sys
@@ -603,10 +603,10 @@ class FXOS8700CQR1(object):
 	"""Representation of an FXOS8700CQ accelerometer/ magnetometer object."""
 	def __init__(self):
 		"""
-		Initializes the accelerometer and magnetomter chip in hybrid mode. Both Accel and mangnetometer functionality are available.
+		Initializes the accelerometer and magnetometer chip in hybrid mode. Both Accel and mangnetometer functionality are available.
 		
 		
-		param none: 
+		:param none: 
 		:returns: none
 		"""
 		self._address = FXOS8700CQR1_ADDRESS
@@ -627,8 +627,8 @@ class FXOS8700CQR1(object):
 		Read the chip ID.
 		
 		
-		param none: 
-		:returns: none
+		:param none: 
+		:returns: chip id
 		"""
 		id = FXO.FXOS8700CQ_ReadByte(self._address,WHO_AM_I)
 		return id
@@ -638,8 +638,8 @@ class FXOS8700CQR1(object):
 		Read the Status register.
 		
 		
-		param none: 
-		:returns: none
+		:param none: 
+		:returns: status register
 		"""
 		return FXO.FXOS8700CQ_ReadByte(self._address,STATUS)
 		
@@ -648,7 +648,7 @@ class FXOS8700CQR1(object):
 		Put the chip in Active mode.
 		
 		
-		param none: 
+		:param none: 
 		:returns: none
 		"""
 		reg1 = FXO.FXOS8700CQ_ReadByte(self._address,CTRL_REG1);
@@ -659,7 +659,7 @@ class FXOS8700CQR1(object):
 		Put the chip in Standby mode.
 		
 		
-		param none: 
+		:param none: 
 		:returns: none
 		"""
 		n = FXO.FXOS8700CQ_ReadByte(self._address,CTRL_REG1)
@@ -671,7 +671,7 @@ class FXOS8700CQR1(object):
 		Configure the Accelerometer with default settings +/- 2g.
 		
 		
-		param none: 
+		:param none: 
 		:returns: none
 		"""
 		FXO.FXOS8700CQ_StandbyMode()
@@ -685,7 +685,7 @@ class FXOS8700CQR1(object):
 		Configure the magnetometer with default settigs.
 		
 		
-		param none: 
+		:param none: 
 		:returns: none
 		"""
 		FXO.FXOS8700CQ_StandbyMode()
@@ -698,7 +698,7 @@ class FXOS8700CQR1(object):
 		Configure the chip in hybrid mode with default settigs 50 Hz ouput data rate.
 		
 		
-		param none: 
+		:param none: 
 		:returns: none
 		"""
 		FXO.FXOS8700CQ_StandbyMode()
@@ -714,8 +714,8 @@ class FXOS8700CQR1(object):
 		Get accelerometer data , these are left justified.
 		
 		
-		param none: 
-		:returns: none
+		:param none: 
+		:returns: acceleration data (ax, ay, az)
 		"""
 		raw0 = FXO.FXOS8700CQ_ReadByte(self._address,OUT_X_MSB)   
 		raw1 = FXO.FXOS8700CQ_ReadByte(self._address,OUT_X_LSB)
@@ -741,7 +741,7 @@ class FXOS8700CQR1(object):
 		Put the sensor in FIFO mode.
 		
 		
-		param none: 
+		:param none: 
 		:returns: none
 		"""
 		FXO.FXOS8700CQ_WriteByte(self._address,F_SETUP,6<<mode)
@@ -751,7 +751,7 @@ class FXOS8700CQR1(object):
 		Enable the highpass filter.
 		
 		
-		param none: 
+		:param none: 
 		:returns: none
 		"""
 		FXO.FXOS8700CQ_WriteByte(self._address,XYZ_DATA_CFG,status)
@@ -761,7 +761,7 @@ class FXOS8700CQR1(object):
 		Configure full scale range.
 		
 		
-		param none: 
+		:param none: 
 		:returns: none
 		"""
 		FXO.FXOS8700CQ_WriteByte(self._address,XYZ_DATA_CFG,range)
@@ -771,7 +771,7 @@ class FXOS8700CQR1(object):
 		Configure the sensor accelerometer dynamic range.
 		
 		
-		param range:  Acceleromter dynamic range
+		:param range:  Accelerometer dynamic range
 		:returns: none
 		"""
 		FXO.FXOS8700CQ_StandbyMode() 	
@@ -790,7 +790,7 @@ class FXOS8700CQR1(object):
 		Configure the accelerometer status.
 		
 		
-		param none: 
+		:param none: 
 		:returns: none
 		"""
 		stat = FXO.FXOS8700CQ_ReadByte(self._address,M_DR_STATUS)
@@ -801,8 +801,8 @@ class FXOS8700CQR1(object):
 		Reads the magnetometer data.
 		
 		
-		param none: 
-		:returns: none
+		:param none: 
+		:returns: magnetometer data (mx, my, mz)
 		"""
 		raw0 = FXO.FXOS8700CQ_ReadByte(self._address,M_OUT_X_MSB)
 		raw1 = FXO.FXOS8700CQ_ReadByte(self._address,M_OUT_X_LSB)
@@ -821,7 +821,7 @@ class FXOS8700CQR1(object):
 		
 		
 		:param none: 
-		:returns: none
+		:returns: magnetometer heading
 		"""
 		(x, y, z) = self.pollAccelerometer()		
 		heading = (math.atan2((y), (x)) * 180)/math.pi
@@ -853,7 +853,7 @@ class FXOS8700CQR1(object):
 		
 		
 		:param none: 
-		:returns: none
+		:returns: current orientation of the Sensorian
 		"""
 		orientation = FXO.FXOS8700CQ_ReadByte(self._address,PL_STATUS)
 		return orientation
@@ -932,7 +932,7 @@ class FXOS8700CQR1(object):
 	
 	def	getTemperature(self):
 		"""
-		Reads the sensor temeprature.
+		Reads the sensor temperature.
 		
 		
 		:param none: 
@@ -943,7 +943,7 @@ class FXOS8700CQR1(object):
 		
 	def readStatusReg(self):
 		"""
-		Read contents of stats register.
+		Read contents of status register.
 		
 		
 		:param none: 

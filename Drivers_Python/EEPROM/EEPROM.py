@@ -1,11 +1,11 @@
 #!/usr/bin/python
 
-"""
+
 __author__ = "D.Qendri"
 __copyright__ = "Copyright 2015 Sensorian"
 __license__ = "GPL V3"
 __version__ = "1.0"
-"""
+
 
 import sys
 import smbus
@@ -47,7 +47,7 @@ class EEPROM(object):
 		
 		
 		:param none: 
-		:returns none:
+		:returns: none
 		"""
 		self._address = EEPROMaddress		
 		
@@ -57,7 +57,7 @@ class EEPROM(object):
 		
 		
 		:param mem_address:  Memory register to write to.
-		:returns ee_data: Byte data to write.
+		:returns: ee_data - Byte data to write.
 		"""
 		self.writeRegister(mem_address,ee_data)
 		
@@ -67,7 +67,7 @@ class EEPROM(object):
 		
 		
 		:param mem_address:  Memory register to write to.
-		:returns ee_data: Byte data to write.
+		:returns: ee_data - Byte data to write.
 		"""
 		self.writeRegister(mem_address,ee_data)
 		
@@ -77,7 +77,7 @@ class EEPROM(object):
 		
 		
 		:param mem_address: Address of register.
-		:returns reg: Register content.
+		:returns: reg - Register content.
 		"""
 		return self.readRegister(mem_address)
 			
@@ -87,7 +87,7 @@ class EEPROM(object):
 		
 		
 		:param mem_address: EEPROM address to write to.
-		:returns reg: Page buffer.
+		:returns: reg - Page buffer.
 		"""
 		self.writeRegister(EEPROM_SREG,protSetting) 
 		
@@ -97,7 +97,7 @@ class EEPROM(object):
 		
 		
 		:param mem_address: EEPROM address to write to
-		:returns: buffer: Page buffer
+		:returns: buffer - Page buffer
 		"""
 		buffer = bus.read_i2c_block_data(self._address,mem_address,8)
 		return buffer
@@ -108,7 +108,7 @@ class EEPROM(object):
 		
 		
 		:param mem_address: EEPROM address to write to
-		:returns: buffer: Page buffer
+		:returns: buffer - Page buffer
 		"""
 		bus.write_i2c_block_data(self._address,mem_address,buffer)							#Enable clock
 

@@ -1,11 +1,11 @@
 #!/usr/bin/python
 
-"""
+
 __author__ = "D.Qendri"
 __copyright__ = "Copyright 2015 Sensorian"
 __license__ = "GPL V3"
 __version__ = "1.0"
-"""
+
 
 import RPi.GPIO as GPIO
 import time
@@ -285,7 +285,7 @@ class S25FL204K(object):
 		
 		
 		:param statReg:  Address of one of the status registers
-		:returns stat:  Status register contents
+		:returns: stat - Status register contents
 		"""
 		self.CE_SELECT()
 		spi.writebytes([statReg])                      # send RDSR command

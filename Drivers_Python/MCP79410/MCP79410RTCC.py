@@ -1,11 +1,11 @@
 #!/usr/bin/python
 
-"""
+
 __author__ = "D.Qendri"
 __copyright__ = "Copyright 2015 Sensorian"
 __license__ = "GPL V3"
 __version__ = "1.0"
-"""
+
 
 import sys
 import smbus
@@ -168,7 +168,7 @@ class MCP79410(object):
 		
 		
 		:param none: 
-		:returns none:
+		:returns: none
 		"""
 		self._address = MCP79410address
 		localtime = time.localtime(time.time())
@@ -185,7 +185,7 @@ class MCP79410(object):
 		
 		
 		:param none: 
-		:returns none:
+		:returns: none
 		"""
 		ST_bit = self.readRegister(DAY);      			#Read day + OSCON bit
 		ST_bit = ST_bit | START_32KHZ;
@@ -197,7 +197,7 @@ class MCP79410(object):
 		
 		
 		:param none: 
-		:returns none:
+		:returns: none
 		"""
 		ST_bit = self.readRegister(DAY);      				#Read day + OSCON bit
 		ST_bit = ST_bit & ~START_32KHZ;
@@ -208,7 +208,7 @@ class MCP79410(object):
 		Checks if the on-chip clock is running.
 		
 		
-		:returns ClockStatus: TRUE if clock is running , FALSE otherwise.
+		:returns: ClockStatus - TRUE if clock is running , FALSE otherwise.
 		"""
 		mask = self.readRegister(DAY);
 		if((mask & OSCRUN) == OSCRUN):             			#If oscillator = already running, do nothing.
@@ -222,7 +222,7 @@ class MCP79410(object):
 		
 		
 		:param none: 
-		:returns current_time : This is an RTCC class object that contains the time. 
+		:returns: current_time - This is an RTCC class object that contains the time. 
 		"""
 		seconds = self.bcd2dec( self.readRegister(SEC) &(~START_32KHZ)) # mask out ST bit
 		minutes = self.bcd2dec( self.readRegister(MIN))
@@ -335,7 +335,7 @@ class MCP79410(object):
 		Get AM or PM for 12 hour format.
 		
 		
-		:returns meridian: PM/AM flag
+		:returns: meridian - PM/AM flag
 		"""
 		bHourBuffer = self.readRegister(HOUR)
 		return (bHourBuffer & 0x20)
@@ -347,7 +347,7 @@ class MCP79410(object):
 		
 		:param alarm: Alarm object , One of the two alarms, ZERO or ONE.
 		:param config:
-		:returns none:
+		:returns: none
 		"""
 		control = self.readRegister(CTRL)
 		if (alarm == Alarm.ZERO):
@@ -366,7 +366,7 @@ class MCP79410(object):
 		
 		
 		:param alarm: Alarm object , One of the two alarms, ZERO or ONE.
-		:returns none:
+		:returns: none
 		"""
 		temp = self.readRegister(CTRL)					#read control register
 		if (alarm == Alarm.ZERO):
@@ -381,7 +381,7 @@ class MCP79410(object):
 		
 		
 		:param alarm: One of the two alarms, ZERO or ONE.
-		:returns status: TRUE if alarm enabled , FALSE if disabled.
+		:returns: status - TRUE if alarm enabled , FALSE if disabled.
 		"""
 		if(alarm == Alarm.ZERO):		
 			temp = self.readRegister(ALM0WDAY)			#Read WKDAY register for ALRAM 0  
@@ -395,7 +395,7 @@ class MCP79410(object):
 	
 	def ClearInterruptFlag(self,alarm):
 		"""
-		Selects which alarm Interrupt flag should be cleared .
+		Selects which alarm Interrupt flag should be cleared.
 		
 		
 		:param alarm: One of the two alarms
@@ -449,7 +449,7 @@ class MCP79410(object):
 		
 		:param time: RTCC object
 		:param alarm: One of the two alarms
-		:returns: none
+		:returns: alarm time
 		"""
 		seconds = self.readRegister(ALARMREG,sec)
 		hours = self.readRegister(ALARMREG,hour)
@@ -575,7 +575,7 @@ class MCP79410(object):
 		
 		
 		:param none: 
-		:returns PowerFail: TRUE if there was a power failure, FALSE otherwise.
+		:returns: PowerFail - TRUE if there was a power failure, FALSE otherwise.
 		"""
 		PowerFailure_bit = self.readRegister(DAY);     #Read meridian bit	
 		PowerFail = 0
@@ -595,7 +595,7 @@ class MCP79410(object):
 		
 		
 		:param none: 
-		:returns status: True is battery mode is enabled , False otherwise.
+		:returns: status - True is battery mode is enabled , False otherwise.
 		"""
 		temp = self.readRegister(DAY)		#The 3rd bit of the RTCC_RTCC day register controls VBATEN   	
 		if((temp & VBATEN) == VBATEN):
@@ -621,7 +621,7 @@ class MCP79410(object):
 		
 		
 		:param none: 
-		:returns none:
+		:returns: none
 		"""
 		temp = self.readRegister(DAY)			#The 3rd bit of the RTCC_RTCC day register controls VBATEN   
 		temp = (temp & VBAT_DIS)			#Clear 3rd bit to disable backup battery mode
@@ -633,7 +633,7 @@ class MCP79410(object):
 		
 		
 		:param none: 
-		:returns powerup_time: Power up time structure.
+		:returns: powerup_time - Power up time structure.
 		"""
 		powerup_time = RTCC_Struct(0,0,0,0,0,0,0)
 		powerup_time.min = self.bcd2dec( self.readRegister(PWRUPMIN))    
@@ -649,7 +649,7 @@ class MCP79410(object):
 		
 		
 		:param none: 
-		:returns powerdown_time: Power down time structure.
+		:returns: powerdown_time - Power down time structure.
 		"""
 		powerdown_time = RTCC_Struct(0,0,0,0,0,0,0)
 		powerdown_time.min = self.bcd2dec( self.readRegister(PWRDNMIN))   
@@ -665,7 +665,7 @@ class MCP79410(object):
 		
 		
 		:param num: Number to convert to BCD
-		:returns bcd: BCD representation of number.
+		:returns: bcd - BCD representation of number.
 		"""
 		return ((num/10 * 16) + (num % 10))
 
@@ -675,7 +675,7 @@ class MCP79410(object):
 		
 		
 		:param num: Number to convert to decimal.
-		:returns dec: Decimal representation of number.
+		:returns: dec - Decimal representation of number.
 		"""
 		return ((num/16 * 10) + (num % 16))
 		
@@ -685,7 +685,7 @@ class MCP79410(object):
 		
 		
 		:param num:  Number to convert to binary.
-		:returns bin: Binary representation of number.
+		:returns: bin - Binary representation of number.
 		"""
 		return (((num) & 0x0f) + ((num) >> 4) * 10)
 		

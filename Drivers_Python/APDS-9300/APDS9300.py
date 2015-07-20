@@ -4,12 +4,12 @@ import smbus
 import time
 bus = smbus.SMBus(1)
 
-"""
+
 __author__ = "D.Qendri"
 __copyright__ = "Copyright 2015 Sensorian"
 __license__ = "GPL V3"
 __version__ = "1.0"
-"""
+
 
 APDS9300ADDR = 0x29					#Address of ambient light sensor
 
@@ -115,7 +115,7 @@ class APDS9300(object):
 		
 		
 		:param channel: Value of 0 or 1.
-		:returns data : Channel data as raw number.
+		:returns: data - Channel data as raw number.
 		"""
 		if(channel == 1):
 			self.writeByte(COMMAND|CMD_CLEAR_INT|CMD_WORD|DATA0LOW)
@@ -177,7 +177,7 @@ class APDS9300(object):
 		Clear any active interrupts.
 		
 		
-		:param: none
+		:param none:
 		:returns: none 
 		"""
 		self.writeByte(COMMAND|CMD_CLEAR_INT)			#Set clear bit to 1

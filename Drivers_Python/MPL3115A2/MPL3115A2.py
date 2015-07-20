@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
-"""
+
 __author__ = "D.Qendri"
 __copyright__ = "Copyright 2015 Sensorian"
 __license__ = "GPL V3"
 __version__ = "1.0"
-"""
+
 
 import sys
 import smbus
@@ -118,7 +118,7 @@ class MPL3115A2(object):
 		
 		
 		:param none: 
-		:returns none:
+		:returns: none
 		"""
 		self._address = MPL3115A2_ADDRESS
 		MPL.I2C_Initialize()
@@ -130,7 +130,7 @@ class MPL3115A2(object):
 		
 		
 		:param none: 
-		:returns Mode: 1 if in Active mode, 0 otherwise
+		:returns: Mode - 1 if in Active mode, 0 otherwise
 		"""
 		return MPL.MPL3115A2_Mode()
 
@@ -140,7 +140,7 @@ class MPL3115A2(object):
 		
 		
 		:param none: 
-		:returns id: Factory ID
+		:returns: id - Factory ID
 		"""
 		a = MPL.MPL3115A2_ID()
 		return int(a)
@@ -151,7 +151,7 @@ class MPL3115A2(object):
 		
 		
 		:param none: 
-		:returns none: Returns -1 if no new data is available
+		:returns: current pressure or -1 if no new data is available
 		"""
 		# return sensor.MPL3115A2_ReadBarometricPressure()
 		status = MPL.MPL3115A2_ReadByte(self._address,STATUS)
@@ -177,7 +177,7 @@ class MPL3115A2(object):
 		
 		
 		:param none: 
-		:returns temp: Returns temperature as a float.
+		:returns: temp - Returns temperature as a float.
 		"""
 		# return sensor.MPL3115A2_ReadTemperature()
 		t_MSB = MPL.MPL3115A2_ReadByte(self._address,OUT_T_MSB)
@@ -192,7 +192,7 @@ class MPL3115A2(object):
 		
 		
 		:param none: 
-		:returns none:
+		:returns: none
 		"""		
 		MPL.MPL3115A2_BarometerMode()
 		
@@ -202,7 +202,7 @@ class MPL3115A2(object):
 		
 		
 		:param none: 
-		:returns none:
+		:returns: none
 		"""
 		ctrl_reg = MPL.MPL3115A2_ReadByte(self._address,CTRL_REG1)	#Read current settings
 		ctrl_reg &= ~(SBYB)											#Go to Standby mode
@@ -217,7 +217,7 @@ class MPL3115A2(object):
 		
 		
 		:param none: 
-		:returns none: Returns altitude as a float
+		:returns: altitude as a float
 		"""
 		m_altitude = MPL.MPL3115A2_ReadByte(self._address,OUT_P_MSB)			 #Read altitude data
 		c_altitude = MPL.MPL3115A2_ReadByte(self._address,OUT_P_CSB)
@@ -231,7 +231,7 @@ class MPL3115A2(object):
 		
 		
 		:param none: 
-		:returns none: Returns altitude as a float
+		:returns: altitude as a float
 		"""
 		alt = MPL.MPL3115A2_ReadAltitude()
 		alt_m = alt >> 8 
@@ -248,7 +248,7 @@ class MPL3115A2(object):
 		
 		
 		:param none: 
-		:returns none: 
+		:returns: none 
 		"""
 		MPL.MPL3115A2_StandbyMode()
 
@@ -258,7 +258,7 @@ class MPL3115A2(object):
 		
 		
 		:param none: 
-		:returns none: 
+		:returns: none
 		"""
 		MPL.MPL3115A2_ActiveMode()
 
@@ -268,7 +268,7 @@ class MPL3115A2(object):
 		
 		
 		:param sampleRate: sampleRate is from 0 to 7
-		:returns none: 
+		:returns: none
 		"""
 		MPL.MPL3115A2_OversampleRate()
 
@@ -278,7 +278,7 @@ class MPL3115A2(object):
 		
 		
 		:param ST_Value:  Time Step value
-		:returns none: 
+		:returns: none
 		"""
 		MPL.MPL3115A2_SetAcquisitionTimeStep(ST_Value)
 
@@ -289,18 +289,18 @@ class MPL3115A2(object):
 		   
 		   
 		:param none: 
-		:returns none: 
+		:returns: none
 		"""
 		MPL.MPL3115A2_enableEventFlags()
 
 	def ToggleOneShot(self):
 		"""
 		Clears then sets the OST bit which causes the sensor to immediately take another reading
-	       Needed to sample faster than 1Hz.
+		   Needed to sample faster than 1Hz.
 		   
 		   
 		:param none: 
-		:returns none: 
+		:returns: none
 		"""
 		MPL.MPL3115A2_toggleOneShot()
 
@@ -311,7 +311,7 @@ class MPL3115A2(object):
 		
 		:param interrupt: Type of interrupt
 		:param pin: Only pin 1 is used
-		:returns none: 
+		:returns: none 
 		"""
 		MPL.MPL3115A2_CofigureInterruptPin()
 
@@ -320,10 +320,10 @@ class MPL3115A2(object):
 		Write byte value from register.
 		
 		
-		:param address: Sensori address
+		:param address: Sensor address
 		:param reg: Register address
 		:param data: Register value
-		:returns none: 
+		:returns: none
 		"""
 		MPL.I2C_WriteByteRegister(address,reg,data)
 		
@@ -334,7 +334,7 @@ class MPL3115A2(object):
 		
 		:param address: Sensor address
 		:param reg: Register address
-		:returns none: 
+		:returns: byte read from register 
 		"""
 		MPL.I2C_ReadByteRegister(address,reg)
 
@@ -346,7 +346,7 @@ class MPL3115A2(object):
 		:param reg: Register address
 		:param buffer: Data buffer
 		:param length: Data length
-		:returns array: Byte array 
+		:returns: array - Byte array 
 		"""		
 		MPL.I2C_ReadByteArray(address,reg,buffer,length)
 
@@ -359,7 +359,7 @@ class MPL3115A2(object):
 		:param reg: Register address
 		:param buffer: Data buffer
 		:param length: buffer length
-		:returns none: 
+		:returns: none
 		"""
 		MPL.MPL3115A2_WriteByteArray(address,reg,buffer,length)
 		
@@ -370,7 +370,7 @@ class MPL3115A2(object):
 		
 		:param val: 
 		:param len:
-		:returns complememt: integer value of two's complement 
+		:returns: complement - integer value of two's complement 
 		"""
 		if(val & (1 << len - 1)):
 			val = val - (1<<len)

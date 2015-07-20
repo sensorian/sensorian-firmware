@@ -1,11 +1,11 @@
 #!/usr/bin/python
 
-"""
+
 __author__ = "D.Qendri"
 __copyright__ = "Copyright 2015 Sensorian"
 __license__ = "GPL V3"
 __version__ = "1.0"
-"""
+
 
 import numbers
 import time
@@ -138,7 +138,7 @@ def color565(r, g, b):
 	:param r: Red byte.
 	:param g: Green byte.
 	:param b: Blue byte.
-	:returns pixel : 16-bit 565 RGB value
+	:returns: pixel - 16-bit 565 RGB value
 	"""
 	return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3)
 
@@ -147,7 +147,7 @@ def image_to_data(image):
 	
 	
 	:param image: PIL image
-	:returns imgArray : 
+	:returns: imgArray 
 	"""
 	pixels = image.convert('RGB').load()
 	width, height = image.size
@@ -168,7 +168,7 @@ class TFT(object):
 		
 		
 		:param none: 
-		:returns none :
+		:returns: none
 		"""
 		self.dc = DC
 		self.rst = RST
@@ -228,7 +228,7 @@ class TFT(object):
 		:param data: Single byte or an array of bytes.
 		:param dataOrCmd: Flag for command or data mode
 		:param length: size of array
-		:returns none :
+		:returns: none
 		"""
 		# Set DC low for command, high for data.
 		GPIO.output(self.dc, dataOrCmd)
@@ -246,7 +246,7 @@ class TFT(object):
 		
 		
 		:param data: Single byte command.
-		:returns none :
+		:returns: none
 		"""
 		self.CE_SELECT()	
 		self.send(data, False)
@@ -258,7 +258,7 @@ class TFT(object):
 		
 		
 		:param data: Data byte
-		:returns none :
+		:returns: none
 		"""
 		self.CE_SELECT()	
 		self.send(data, True)
@@ -270,7 +270,7 @@ class TFT(object):
 		
 		
 		:param none: 
-		:returns none :
+		:returns: none
 		"""
 		if self._rst is not None:
 			GPIO.output(self.rst,1)
@@ -286,7 +286,7 @@ class TFT(object):
 		
 		
 		:param none: 
-		:returns none :
+		:returns: none
 		"""
 	
 		GPIO.setup(self.dc, GPIO.OUT)
@@ -406,7 +406,7 @@ class TFT(object):
 		:param y0:
 		:param x1: y0 and y1 should define the minimum and maximum y pixel bound.
 		:param y1:
-		:returns none :
+		:returns: none
 		"""
 		if x1 is None:
 			x1 = self.width-1
@@ -431,7 +431,7 @@ class TFT(object):
 		
 		
 		:param image: picture image
-		:returns none :
+		:returns: none
 		"""
 		# By default write the internal buffer to the display.
 		if image is None:
@@ -452,7 +452,7 @@ class TFT(object):
 		
 		
 		:param color: Background color. 
-		:returns none :
+		:returns: none
 		"""
 		width, height = self.buffer.size
 		self.buffer.putdata([color]*(width*height))
@@ -463,7 +463,7 @@ class TFT(object):
 		
 		
 		:param none: 
-		:returns none :
+		:returns: none
 		"""
 		return ImageDraw.Draw(self.buffer)
 
@@ -472,7 +472,7 @@ class TFT(object):
 		
 		
 		:param status:  Color inversion status.
-		:returns none :
+		:returns: none
 		"""
 		if (status == False):
 			self.command(INVOFF)
@@ -485,7 +485,7 @@ class TFT(object):
 			
 			
 		:param mode: orientation data   
-		:returns none :
+		:returns: none
 		"""
 		self.command(MADCTL)
 		if (mode == 0x00):
@@ -511,7 +511,7 @@ class TFT(object):
 		
 		
 		:param gamma:  Is from 1 to 4.
-		:returns none :
+		:returns: none
 		"""
 		self.command(NORON)
 		if(gamma == 1):
@@ -531,7 +531,7 @@ class TFT(object):
 		
 		:param start:  start of patial area
 		:param end:  end of patial area
-		:returns none :
+		:returns: none
 		"""
 		self.command(PTLON)
 		self.data(start)				# start row
@@ -550,7 +550,7 @@ class TFT(object):
 		:param vsa:  vertical scrolling area
 		:param bfa:  bottom fixed area row
 		:param firstline: Beginning of  first line
-		:returns none :
+		:returns: none
 		"""
 		self.command(SCRLAR)
 		self.data(tfa)				# start row
@@ -570,7 +570,7 @@ class TFT(object):
 		
 		
 		:param none: 
-		:returns none :
+		:returns: none
 		"""
 		self.command(NORON)
 
@@ -580,7 +580,7 @@ class TFT(object):
 		
 		
 		:param mode: Constant number
-		:returns none :
+		:returns: none
 		"""
 		self.command(COLMOD)
 		self.data(mode)
@@ -591,7 +591,7 @@ class TFT(object):
 		
 		
 		:param none: 
-		:returns none :
+		:returns: none
 		"""
 		self.command(SLEEP_IN)
 		time.sleep(0.005)
@@ -602,7 +602,7 @@ class TFT(object):
 		
 		
 		:param none: 
-		:returns none :
+		:returns: none
 		"""
 		self.command(SLEEP_OUT)
 		time.sleep(0.120)
@@ -613,7 +613,7 @@ class TFT(object):
 		
 		
 		:param onoff: idle mode status
-		:returns none :
+		:returns: none
 		"""
 		if(onoff == 0):
 			self.command(SIDLE_MODE_OFF)
@@ -626,7 +626,7 @@ class TFT(object):
 		
 		
 		:param none: 
-		:returns none :
+		:returns: none
 		"""
 		self.command(DISPOFF)
 
@@ -636,6 +636,6 @@ class TFT(object):
 		
 		
 		:param none: 
-		:returns none :
+		:returns: none
 		"""
 		self.command(DISPON)

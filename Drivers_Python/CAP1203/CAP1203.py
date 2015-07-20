@@ -1,11 +1,11 @@
 #!/usr/bin/python
 
-"""
+
 __author__ = "D.Qendri"
 __copyright__ = "Copyright 2015 Sensorian"
 __license__ = "GPL V3"
 __version__ = "1.0"
-"""
+
 
 import sys
 import time
@@ -94,7 +94,7 @@ class CAP1203(object):
 		
 		
 		:param none: 
-		:returns : none 
+		:returns: true if a multi-touch event happened 
 		"""
 		return CAP.CAP1203_MultitouchEvent()
 		
