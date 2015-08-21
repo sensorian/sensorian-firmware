@@ -31,8 +31,6 @@ def drawCircle(x,y,r,fill=(0,0,255),outline=(0,255,0)):
 	draw.ellipse((x-r, y-r, x+r, y+r), fill,outline)		# Draw a blue ellipse with a green outline.
 	
 def main():
-	sensor = CDLL("./libCAP.so")				#load the shared library
-	sensor.I2C_Initialize()						#initialize I2C and BCM library
 
 	CapTouch  = capTouch.CAP1203()
 	CapTouch.activeMode()

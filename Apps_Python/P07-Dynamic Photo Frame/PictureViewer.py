@@ -7,8 +7,6 @@ import time
 import FXOS8700CQR1 as imuSens
 from ctypes import *
 
-sensor = CDLL("./libFXO.so")				#Load the low level library
-sensor.I2C_Initialize(imuSens.FXOS8700CQR1_ADDRESS)	#Initialize I2C and BCM library
 
 imuSens = imuSens.FXOS8700CQR1()				#Configure chip in hybrid mode
 imuSens.standbyMode()	
@@ -16,29 +14,28 @@ imuSens.activeMode()
 
 graphicDisplay = display.TFT()
 graphicDisplay.initialize()					# Initialize display.
+
 image1 = Image.open('logoscreen.jpg')
 
 def L1():
-	print "Landscape left. \r\n"
-	image = image1.rotate(90).resize((128, 160))
-	graphicDisplay.display(image)
-	
-def L2():
 	print "Landscape right.\r\n"
 	image = image1.rotate(270).resize((128, 160))
 	graphicDisplay.display(image)
-
-def P1():
-	print "Portrait up.\r\n" 
-	image = image1.rotate(180).resize((128, 160))
-	graphicDisplay.display(image)
 	
-def P2():
+def L2():
+	print "Landscape left. \r\n"
+	image = image1.rotate(90).resize((128, 160))
+	graphicDisplay.display(image)
+		
+def P1():
 	print "Portrait down.\r\n"
 	image = image1.rotate(0).resize((128, 160))
 	graphicDisplay.display(image)
 		
-
+def P2():
+	print "Portrait up.\r\n" 
+	image = image1.rotate(180).resize((128, 160))
+	graphicDisplay.display(image)
 	
 options = {0 : L1,
 			1 : L2,

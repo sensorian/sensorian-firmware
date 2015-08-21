@@ -3,13 +3,11 @@ import Image
 import ImageDraw
 import ImageFont
 import time
-import TFT as GLCD
 import os, sys
+import sys
+import TFT as GLCD
 import MPL3115A2 as altibar
 from ctypes import *
-
-sensor = CDLL("./libMPL.so")						#load the shared library
-sensor.I2C_Initialize(altibar.MPL3115A2_ADDRESS)	#initialize I2C and BCM library
 
 
 def main(argv):
