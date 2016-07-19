@@ -1,3 +1,31 @@
+/****************************************************************************
+ * Copyright (C) 2015 Sensorian
+ *                                                                          *
+ * This file is part of Sensorian.                                          *
+ *                                                                          *
+ *   Sensorian is free software: you can redistribute it and/or modify it   *
+ *   under the terms of the GNU Lesser General Public License as published  *
+ *   by the Free Software Foundation, either version 3 of the License, or   *
+ *   (at your option) any later version.                                    *
+ *                                                                          *
+ *   Sensorian is distributed in the hope that it will be useful,           *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+ *   GNU Lesser General Public License for more details.                    *
+ *                                                                          *
+ *   You should have received a copy of the GNU Lesser General Public       *
+ *   License along with Sensorian.                                          *
+ *   If not, see <http://www.gnu.org/licenses/>.                            *
+ ****************************************************************************/
+ 
+ /**
+ * @file FXOS8700CQR1/Example2/FXOS8700CQ.c
+ * @author D.Qendri
+ * @date 30 May 2015
+ * @brief Accelerometer / Magnetometer driver.
+ *
+ */
+ 
 #include <unistd.h>
 #include "FXOS8700CQ.h"
 #include "MemoryMap.h"
@@ -13,16 +41,16 @@
  */
 void  FXOS8700CQ_Initialize(void)
 {
-  FXOS8700CQ_WriteByte(FXOS_CTRL_REG2, RST_MASK);   					//Reset sensor, and wait for reboot to complete
+  FXOS8700CQ_WriteByte(CTRL_REG2, RST_MASK);   					//Reset sensor, and wait for reboot to complete
   bcm2835_delay(2);												//Wait at least 1ms after issuing a reset before attempting communications.
   
   FXOS8700CQ_StandbyMode();
-  while (FXOS8700CQ_ReadByte(FXOS_CTRL_REG2) & RST_MASK);
+  while (FXOS8700CQ_ReadByte(CTRL_REG2) & RST_MASK);
   FXOS8700CQ_WriteByte(M_CTRL_REG1, (HYBRID_ACTIVE|M_OSR2_MASK|M_OSR1_MASK|M_OSR0_MASK) );      // OSR=max, Hybrid Mode 
   FXOS8700CQ_WriteByte(M_CTRL_REG2, M_HYB_AUTOINC_MASK);       							//Enable Hyb Mode Auto Increments  in order to read all data
-  FXOS8700CQ_WriteByte(FXOS_CTRL_REG4, INT_EN_DRDY_MASK );           						// Enable interrupts for DRDY (TO, Aug 2012)
+  FXOS8700CQ_WriteByte(CTRL_REG4, INT_EN_DRDY_MASK );           						// Enable interrupts for DRDY (TO, Aug 2012)
   FXOS8700CQ_WriteByte(XYZ_DATA_CFG, FULL_SCALE_2G);             						//Full Scale of +/-2g
-  FXOS8700CQ_WriteByte(FXOS_CTRL_REG1, (HYB_ASLP_RATE_25HZ|HYB_DATA_RATE_50HZ)  );     		//System Output Data Rate of 200Hz (5ms), Sleep Mode Poll Rate of 50Hz (20ms)
+  FXOS8700CQ_WriteByte(CTRL_REG1, (HYB_ASLP_RATE_25HZ|HYB_DATA_RATE_50HZ)  );     		//System Output Data Rate of 200Hz (5ms), Sleep Mode Poll Rate of 50Hz (20ms)
 }
 
 /**
@@ -40,8 +68,8 @@ char FXOS8700CQ_ReadStatusReg(void)
  */
 void FXOS8700CQ_ActiveMode (void)
 {
-  char reg1 = FXOS8700CQ_ReadByte(FXOS_CTRL_REG1);
-  FXOS8700CQ_WriteByte(FXOS_CTRL_REG1, (reg1 | FXOS_ACTIVE_MASK));   //Set the Active bit in System Control 1 Register.
+  char reg1 = FXOS8700CQ_ReadByte(CTRL_REG1);
+  FXOS8700CQ_WriteByte(CTRL_REG1, (reg1 | ACTIVE_MASK));   //Set the Active bit in System Control 1 Register.
 }
 
 /**
@@ -50,9 +78,9 @@ void FXOS8700CQ_ActiveMode (void)
  */
 char FXOS8700CQ_StandbyMode (void)
 {
-  char n = FXOS8700CQ_ReadByte(FXOS_CTRL_REG1);
-  FXOS8700CQ_WriteByte(FXOS_CTRL_REG1, n & (~FXOS_ACTIVE_MASK));
-  return (n & ~FXOS_ACTIVE_MASK);
+  char n = FXOS8700CQ_ReadByte(CTRL_REG1);
+  FXOS8700CQ_WriteByte(CTRL_REG1, n & (~ACTIVE_MASK));
+  return (n & ~ACTIVE_MASK);
 }
 
 /**
@@ -65,9 +93,9 @@ void FXOS8700CQ_HybridMode(void)
   FXOS8700CQ_StandbyMode();
   FXOS8700CQ_WriteByte(M_CTRL_REG1, (HYBRID_ACTIVE|M_OSR2_MASK|M_OSR1_MASK|M_OSR0_MASK) );      // OSR=max, hybrid mode (TO, Aug 2012)
   FXOS8700CQ_WriteByte(M_CTRL_REG2, M_HYB_AUTOINC_MASK);       // enable hybrid autoinc
-  FXOS8700CQ_WriteByte(FXOS_CTRL_REG4, INT_EN_DRDY_MASK );           // Enable interrupts for DRDY (TO, Aug 2012)
+  FXOS8700CQ_WriteByte(CTRL_REG4, INT_EN_DRDY_MASK );           // Enable interrupts for DRDY (TO, Aug 2012)
   FXOS8700CQ_WriteByte(XYZ_DATA_CFG, FULL_SCALE_2G);             // Set FSR of accel to +/-2g
-  FXOS8700CQ_WriteByte(FXOS_CTRL_REG1, (HYB_ASLP_RATE_25HZ|HYB_DATA_RATE_50HZ)  );     // Set ODRs
+  FXOS8700CQ_WriteByte(CTRL_REG1, (HYB_ASLP_RATE_25HZ|HYB_DATA_RATE_50HZ)  );     // Set ODRs
   FXOS8700CQ_ActiveMode();
 }
 
@@ -77,7 +105,7 @@ void FXOS8700CQ_HybridMode(void)
  */
 char FXOS8700CQ_GetChipMode(void)
 {
-    char mode = FXOS8700CQ_ReadByte(FXOS_SYSMOD);
+    char mode = FXOS8700CQ_ReadByte(SYSMOD);
     return mode;
 }
 
@@ -87,7 +115,7 @@ char FXOS8700CQ_GetChipMode(void)
  */
 char FXOS8700CQ_ID (void)
 {
-    char id  = FXOS8700CQ_ReadByte(FXOS_WHO_AM_I);
+    char id  = FXOS8700CQ_ReadByte(WHO_AM_I);
     return id;
 }
 
@@ -98,9 +126,9 @@ char FXOS8700CQ_ID (void)
 void FXOS8700CQ_ConfigureAccelerometer(void)
 {
   FXOS8700CQ_StandbyMode();
-  FXOS8700CQ_WriteByte(FXOS_CTRL_REG4, INT_EN_DRDY_MASK );           		// Enable interrupts for DRDY (TO, Aug 2012)
+  FXOS8700CQ_WriteByte(CTRL_REG4, INT_EN_DRDY_MASK );           		// Enable interrupts for DRDY (TO, Aug 2012)
   FXOS8700CQ_WriteByte(XYZ_DATA_CFG, FULL_SCALE_2G);            		// Set FSR of accel to +/-2g
-  FXOS8700CQ_WriteByte(FXOS_CTRL_REG1, (HYB_ASLP_RATE_25HZ|HYB_DATA_RATE_50HZ)  );     // Set ODRs
+  FXOS8700CQ_WriteByte(CTRL_REG1, (HYB_ASLP_RATE_25HZ|HYB_DATA_RATE_50HZ)  );     // Set ODRs
   FXOS8700CQ_ActiveMode();
 }
 
@@ -214,13 +242,13 @@ void FXOS8700CQ_GetData(rawdata_t *accel_data, rawdata_t *magn_data)
 	char raw[12] = {0};
     FXOS8700CQ_ReadByteArray(OUT_X_MSB, raw, FXOS8700CQ_READ_LEN);
    
-    accel_data->x = (raw[0] << 8) | raw[1];		// Pull out 16-bit, 2's complement magnetometer data
-    accel_data->y = (raw[2] << 8) | raw[3];
-    accel_data->z = (raw[4] << 8) | raw[5];
+    magn_data->x = (raw[0] << 8) | raw[1];		// Pull out 16-bit, 2's complement magnetometer data
+    magn_data->y = (raw[2] << 8) | raw[3];
+    magn_data->z = (raw[4] << 8) | raw[5];
     
-    magn_data->x = (raw[6] << 8) | raw[7];		// Pull out 14-bit, 2's complement, right-justified accelerometer data
-    magn_data->y = (raw[8] << 8) | raw[9];
-    magn_data->z = (raw[10] << 8) | raw[11];
+    accel_data->x = (raw[6] << 8) | raw[7];		// Pull out 14-bit, 2's complement, right-justified accelerometer data
+    accel_data->y = (raw[8] << 8) | raw[9];
+    accel_data->z = (raw[10] << 8) | raw[11];
 
     // Have to apply corrections to make the int16_t correct
     if(accel_data->x > UINT14_MAX/2) 
@@ -242,9 +270,9 @@ void FXOS8700CQ_GetData(rawdata_t *accel_data, rawdata_t *magn_data)
  *@param mode FIFO mode
  *@return none
  */
-void FXOS8700CQ_FIFOMode(FXOS_mode_t mode)
+void FXOS8700CQ_FIFOMode(mode_t mode)
 {
-    FXOS8700CQ_WriteByte(FXOS_F_SETUP,6<<mode);
+    FXOS8700CQ_WriteByte(F_SETUP,6<<mode);
 }
 
 /**
@@ -267,8 +295,8 @@ void FXOS8700CQ_SetODR (char DataRateValue)
 {
 	DataRateValue <<= 3; 		//Adjust the desired Output Data Rate value as needed.
 	FXOS8700CQ_StandbyMode();
-	FXOS8700CQ_WriteByte(FXOS_CTRL_REG1,FXOS8700CQ_ReadByte(FXOS_CTRL_REG1) & ~DR_MASK);		//Write in the Data Rate value into Ctrl Reg 1 
-	FXOS8700CQ_WriteByte(FXOS_CTRL_REG1, FXOS8700CQ_ReadByte(FXOS_CTRL_REG1)| DataRateValue); 
+	FXOS8700CQ_WriteByte(CTRL_REG1,FXOS8700CQ_ReadByte(CTRL_REG1) & ~DR_MASK);		//Write in the Data Rate value into Ctrl Reg 1 
+	FXOS8700CQ_WriteByte(CTRL_REG1, FXOS8700CQ_ReadByte(CTRL_REG1)| DataRateValue); 
 	FXOS8700CQ_ActiveMode();
 }
 
@@ -428,8 +456,8 @@ void FXOS8700CQ_ConfigureGenericTapMode(void)
 	FXOS8700CQ_WriteByte(PULSE_LTCY, 0x28);	//Set the Pulse Latency Timer to 200 ms, 200 Hz ODR Low Power Mode, LPF Not Enabled. 200 ms/5.0 ms = 40 counts
 	FXOS8700CQ_WriteByte(PULSE_WIND, 0x0F);	//Set the Pulse window to 300 ms, 100 Hz ODR Low Power Mode, LPF Enabled 300 ms/20 ms = 15 counts	
 	
-	FXOS8700CQ_WriteByte(FXOS_CTRL_REG4, 0x08);	//Enable Tap Interrupt in Register 0x2D.
-	FXOS8700CQ_WriteByte(FXOS_CTRL_REG5,0x08); 	//Set Tap to INT1
+	FXOS8700CQ_WriteByte(CTRL_REG4, 0x08);	//Enable Tap Interrupt in Register 0x2D.
+	FXOS8700CQ_WriteByte(CTRL_REG5,0x08); 	//Set Tap to INT1
 }
 
 /**
@@ -440,19 +468,19 @@ void  FXOS8700CQ_ConfigureSingleTapMode(void)
 {
 	//To set up any configuration make sure to be in Standby Mode.
 
-	FXOS8700CQ_WriteByte(FXOS_CTRL_REG1, 0x08); 					//400 Hz, Standby Mode
+	FXOS8700CQ_WriteByte(CTRL_REG1, 0x08); 					//400 Hz, Standby Mode
 	FXOS8700CQ_WriteByte(PULSE_CFG, 0x15);					//Enable X and Y and Z Single Pulse
 	FXOS8700CQ_WriteByte(PULSE_THSX, 0x19); 				//Set X Threshold to 1.575g
 	FXOS8700CQ_WriteByte(PULSE_THSY, 0x19); 				//Set Y Threshold to 1.575g 
 	FXOS8700CQ_WriteByte(PULSE_THSZ, 0x2A); 				//Set Z Threshold to 2.65g
 	FXOS8700CQ_WriteByte(PULSE_TMLT,0x50);  				//Set Time Limit for Tap Detection to 50 ms, Normal Mode, No LPF
 	FXOS8700CQ_WriteByte(PULSE_LTCY,0xF0); 					// Set Latency Time to 300 ms
-	FXOS8700CQ_WriteByte(FXOS_CTRL_REG4, 0x08); 					//Route INT1 to System
-	FXOS8700CQ_WriteByte(FXOS_CTRL_REG5, 0x08); 					//Route Pulse Interrupt Block to INT1 hardware Pin 
-	unsigned char CTRL_REG1_Data = FXOS8700CQ_ReadByte(FXOS_CTRL_REG1);		//Read out the contents of the register
+	FXOS8700CQ_WriteByte(CTRL_REG4, 0x08); 					//Route INT1 to System
+	FXOS8700CQ_WriteByte(CTRL_REG5, 0x08); 					//Route Pulse Interrupt Block to INT1 hardware Pin 
+	unsigned char CTRL_REG1_Data = FXOS8700CQ_ReadByte(CTRL_REG1);		//Read out the contents of the register
 	CTRL_REG1_Data |= 0x01; 								//Change the value in the register to Active Mode.
 
-	FXOS8700CQ_WriteByte(FXOS_CTRL_REG1, CTRL_REG1_Data); 		//Write in the updated value to put the device in 
+	FXOS8700CQ_WriteByte(CTRL_REG1, CTRL_REG1_Data); 		//Write in the updated value to put the device in 
 }
 
 /**
@@ -461,7 +489,7 @@ void  FXOS8700CQ_ConfigureSingleTapMode(void)
  */
 void FXOS8700CQ_ConfigureDoubleTapMode(void)
 {
-	FXOS8700CQ_WriteByte(FXOS_CTRL_REG1, 0x08); 							//400 Hz, Standby Mode
+	FXOS8700CQ_WriteByte(CTRL_REG1, 0x08); 							//400 Hz, Standby Mode
 	FXOS8700CQ_WriteByte(PULSE_CFG, 0x2A);							//Enable X, Y and Z Double Pulse with DPA = 0 no double pulse abort
 	FXOS8700CQ_WriteByte(PULSE_THSX, 0x08); 						//Set X Threshold to 3g 
 	FXOS8700CQ_WriteByte(PULSE_THSY, 0x08); 						//Set Y Threshold to 3g
@@ -469,13 +497,13 @@ void FXOS8700CQ_ConfigureDoubleTapMode(void)
 	FXOS8700CQ_WriteByte(PULSE_TMLT,0x30); 							//60 ms Note: 400 Hz ODR, Time step is 1.25 ms per step
 	FXOS8700CQ_WriteByte(PULSE_LTCY,0x50);							//200 ms Set Latency Time to 200 ms
 	FXOS8700CQ_WriteByte(PULSE_WIND,0x78); 							//300 ms Set Time Window for second tap to 300 ms
-	FXOS8700CQ_WriteByte(FXOS_CTRL_REG4, 0x08); 							//Enable Pulse Interrupt in System CTRL_REG4
-	FXOS8700CQ_WriteByte(FXOS_CTRL_REG5, 0x08); 							//Route Pulse Interrupt to INT1 hardware Pin CTRL_REG5
+	FXOS8700CQ_WriteByte(CTRL_REG4, 0x08); 							//Enable Pulse Interrupt in System CTRL_REG4
+	FXOS8700CQ_WriteByte(CTRL_REG5, 0x08); 							//Route Pulse Interrupt to INT1 hardware Pin CTRL_REG5
 
-	unsigned char CTRL_REG1_Data = FXOS8700CQ_ReadByte(FXOS_CTRL_REG1); 	//Read out the contents of the register
+	unsigned char CTRL_REG1_Data = FXOS8700CQ_ReadByte(CTRL_REG1); 	//Read out the contents of the register
 	CTRL_REG1_Data |= 0x01; 										//Change the value in the register to Active Mode.
 	
-	FXOS8700CQ_WriteByte(FXOS_CTRL_REG1, CTRL_REG1_Data); 				//Write in the updated value to put the device in Active Mode.
+	FXOS8700CQ_WriteByte(CTRL_REG1, CTRL_REG1_Data); 				//Write in the updated value to put the device in Active Mode.
 }
 
 /// @}
@@ -488,7 +516,7 @@ void FXOS8700CQ_ConfigureDoubleTapMode(void)
  */
 void FXOS8700CQ_WriteByte(char reg, char value)
 {
-	I2C_WriteByteRegister(FXOS8700CQ_ADDRESS,reg,value);			//Write value to register
+	I2C_WriteByteRegister(reg,value);			//Write value to register
 }
 
 /**
@@ -500,7 +528,7 @@ void FXOS8700CQ_WriteByte(char reg, char value)
  */
 void FXOS8700CQ_WriteByteArray(char reg, char* buffer, char length)
 {
-	I2C_WriteByteArray(FXOS8700CQ_ADDRESS,reg,buffer,length);			//Write values to register
+	I2C_WriteByteArray(reg,buffer,length);			//Write values to register
 }
 
 /**
@@ -510,7 +538,7 @@ void FXOS8700CQ_WriteByteArray(char reg, char* buffer, char length)
  */
 char FXOS8700CQ_ReadByte(char reg)
 {
-    return I2C_ReadByteRegister(FXOS8700CQ_ADDRESS,reg);		//Read register current value
+    return I2C_ReadByteRegister(reg);		//Read register current value
 }
 
 /**
@@ -522,5 +550,5 @@ char FXOS8700CQ_ReadByte(char reg)
  */
 void FXOS8700CQ_ReadByteArray(char reg, char *buffer, unsigned int length)
 {
-    I2C_ReadByteArray(FXOS8700CQ_ADDRESS,reg,buffer,length);	//Read values starting from the reg address
+    I2C_ReadByteArray(reg,buffer,length);	//Read values starting from the reg address
 }
