@@ -8,6 +8,7 @@
 
 #include <bcm2835.h>
 #include <stdio.h>
+#include <unistd.h>
 #include "MPL3115A2.h"
 #include "APDS9300.h"
 #include "CAP1203.h"
@@ -16,6 +17,7 @@
 #include "led.h"
 #include "i2c.h"
 #include "Utilities.h"
+#include "SensorsInterface.h"
 
 RTCC_Struct *current_time; /*!< Stores last polled date and time */
 
@@ -67,20 +69,21 @@ int setupSensorian(void)
 	}
 	MCP79410_Initialize();	//Initialize RTCC with system time and date
 	current_time = (RTCC_Struct *) malloc(sizeof(RTCC_Struct));
-	
+
+	sleep(2); // Wait 2 seconds or some sensors won't be ready
+	printf("Sensors initialized.\n");
 	return 0;
 }
 
 /**
- * @brief Polls the ambient light sensor for lux level and returns it as an int
- * @return int of the calculated current lux level
+ * @brief Polls the ambient light sensor for lux level and returns it as a c_float, needs to be converted in the Python version
+ * @return float of the calculated current lux level
  */
-int getAmbientLight(void)
+float getAmbientLight(void)
 {
-	unsigned int channel1 = AL_ReadChannel(CH0);
-	unsigned int channel2 = AL_ReadChannel(CH1);
-	float lux = AL_Lux(channel1,channel2);
-	return (int) lux*100;
+	unsigned int channel1 = AL_ReadChannel(CH0);  //Get a light reading from the first channel
+	unsigned int channel2 = AL_ReadChannel(CH1);  //Get a light reading from the second channel
+	return AL_Lux(channel1,channel2);  //Return a c_float of the calculated lux level
 }
 
 float mpl_temperature = 0.0; /*!< Stores last Temperature polled from MPL3115A2 */
@@ -362,4 +365,20 @@ void reset_alarm(void)
 		MCP79410_ClearInterruptFlag(RTCC_ZERO);  //Alarms trigger an interrupt so clear that
 		MCP79410_DisableAlarm(RTCC_ZERO);  //Turn off the alarm since it is confirmed to have triggered
 	}
+}
+
+/**
+ * @brief Turn on the orange LED on the Sensorian
+ */
+void orange_led_on(void)
+{
+	LED_on();  //Call the function to do so from TFT.c so it isn't called implicitly from the program
+}
+
+/**
+ * @brief Turn off the orange LED on the Sensorian
+ */
+void orange_led_off(void)
+{
+	LED_off();  //Call the function to do so from TFT.c so it isn't called implicitly from the program
 }

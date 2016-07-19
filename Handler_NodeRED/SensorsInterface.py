@@ -36,11 +36,14 @@ def ledOff():
 
 
 def getAmbientLight():
-    """Gets an int of the ambient light level.
+    """Gets a float of the ambient light level.
 
     Call the C version of the function using the DLL to get the ambient light level.
     """
-    return lib_sensorian.getAmbientLight()
+    lightCall = lib_sensorian.getAmbientLight  # Creates a C function to be called later
+    lightCall.restype = c_float  # Tells Python to expect a return type of float rather than the default of int
+    lightString = str(lightCall())  # Calls the C function and stores the result in a string
+    return float(lightString)  # Returns a float when called
 
 ## @var mpl_last_polled
 # Used to ensure the temperature/altitude/pressure sensor is not polled too often
