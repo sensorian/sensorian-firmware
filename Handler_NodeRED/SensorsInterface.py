@@ -36,6 +36,7 @@ def ledOff():
 
 
 def getAmbientLight():
+    """Gets an int of the ambient light level.
 
     Call the C version of the function using the DLL to get the ambient light level.
     """
