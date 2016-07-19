@@ -214,13 +214,13 @@ void FXOS8700CQ_GetData(rawdata_t *accel_data, rawdata_t *magn_data)
 	char raw[12] = {0};
     FXOS8700CQ_ReadByteArray(OUT_X_MSB, raw, FXOS8700CQ_READ_LEN);
    
-    magn_data->x = (raw[0] << 8) | raw[1];		// Pull out 16-bit, 2's complement magnetometer data
-    magn_data->y = (raw[2] << 8) | raw[3];
-    magn_data->z = (raw[4] << 8) | raw[5];
+    accel_data->x = (raw[0] << 8) | raw[1];		// Pull out 16-bit, 2's complement magnetometer data
+    accel_data->y = (raw[2] << 8) | raw[3];
+    accel_data->z = (raw[4] << 8) | raw[5];
     
-    accel_data->x = (raw[6] << 8) | raw[7];		// Pull out 14-bit, 2's complement, right-justified accelerometer data
-    accel_data->y = (raw[8] << 8) | raw[9];
-    accel_data->z = (raw[10] << 8) | raw[11];
+    magn_data->x = (raw[6] << 8) | raw[7];		// Pull out 14-bit, 2's complement, right-justified accelerometer data
+    magn_data->y = (raw[8] << 8) | raw[9];
+    magn_data->z = (raw[10] << 8) | raw[11];
 
     // Have to apply corrections to make the int16_t correct
     if(accel_data->x > UINT14_MAX/2) 
