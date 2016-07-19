@@ -1,3 +1,11 @@
+/**
+ * @file SensorsInterface.c
+ * @author Michael Lescisin
+ * @author Dylan Kauling
+ * @date 06 July 2016
+ * @brief Controls the various sensors and modules on the Sensorian Shield
+ */
+
 #include <bcm2835.h>
 #include <stdio.h>
 #include "MPL3115A2.h"
@@ -9,8 +17,13 @@
 #include "i2c.h"
 #include "Utilities.h"
 
-RTCC_Struct *current_time;
+RTCC_Struct *current_time; /*!< Stores last polled date and time */
 
+
+/**
+ * @brief Sets up all the Sensorian sensors, buttons, clock and LED for use by the program
+ * @return 0 upon successful setup
+ */
 int setupSensorian(void)
 {
 	printf("Initializing sensors.\r\n");
@@ -58,19 +71,26 @@ int setupSensorian(void)
 	return 0;
 }
 
+/**
+ * @brief Polls the ambient light sensor for lux level and returns it as an int
+ * @return int of the calculated current lux level
+ */
 int getAmbientLight(void)
 {
 	unsigned int channel1 = AL_ReadChannel(CH0);
 	unsigned int channel2 = AL_ReadChannel(CH1);
 	float lux = AL_Lux(channel1,channel2);
-	//printf("Lux: %f.\r\n" ,lux);
 	return (int) lux*100;
 }
 
-float mpl_temperature = 0.0; //Temperature recorded from MPL3115A2.
-float mpl_altitude = 0.0; //Altitude recorded from MPL3115A2.
-float mpl_pressure = 0.0; //Barometric pressure from MPL3115A2.
+float mpl_temperature = 0.0; /*!< Stores last Temperature polled from MPL3115A2 */
+float mpl_altitude = 0.0; /*!< Stores last Altitude polled from MPL3115A2 */
+float mpl_pressure = 0.0; /*!< Stores last Barometric Pressure polled from MPL3115A2 */
 
+
+/**
+ * @brief Polls the sensor for temperature, altitude and pressure sequentially and stores their values in their global buffers
+ */
 void pollMPL(void)
 {
 	mpl_temperature = MPL3115A2_ReadTemperature();
@@ -82,38 +102,44 @@ void pollMPL(void)
 	mpl_pressure = MPL3115A2_ReadBarometricPressure();
 }
 
+/**
+ * @brief Gets the ambient temperature from when the last time the MPL sensor was polled
+ * @return int of the ambient temperature from the last poll
+ */
 int getTemperature(void)
 {
-	//float temp = MPL3115A2_ReadTemperature();
 	return (int) mpl_temperature;
 }
 
+/**
+ * @brief Gets the altitude from when the last time the MPL sensor was polled
+ * @return int of the altitude from the last poll
+ */
 int getAltitude(void)
 {
-	//MPL3115A2_StandbyMode();
-	//MPL3115A2_AltimeterMode();
-	//float alt = MPL3115A2_ReadAltitude();
 	return (int) mpl_altitude;
 }
 
+/**
+ * @brief Gets the barometric pressure from when the last time the MPL sensor was polled
+ * @return int of the barometric pressure from the last poll
+ */
 int getBarometricPressure(void)
 {
-	//MPL3115A2_StandbyMode();
-	//MPL3115A2_BarometerMode();
-	//float press = MPL3115A2_ReadBarometricPressure();	//Take a pressure reading
 	return (int) mpl_pressure;
 }
 
 
-rawdata_t magnetometerBuffer = {.x = 0, .y = 0, .z = 0}; //Magnetometer data
-rawdata_t accelerometerBuffer = {.x = 0, .y = 0, .z = 0}; //Accelerometer data
+rawdata_t magnetometerBuffer = {.x = 0, .y = 0, .z = 0}; /*!< Stores last polled Magnetometer data */
+rawdata_t accelerometerBuffer = {.x = 0, .y = 0, .z = 0}; /*!< Stores last polled Accelerometer data */
 
-
+/**
+ * @brief Polls the accelerometer and magnetometer simultaneously and stores their values in the global buffer
+ */
 void pollFXOS(void)
 {
 	if(FXOS8700CQ_ReadStatusReg() & 0x80)
 	{
-		// FXOS8700CQ_PollAccelerometer(&accelerometerBuffer);	
 		FXOS8700CQ_GetData(&accelerometerBuffer,&magnetometerBuffer);
 	}
 	else
@@ -128,7 +154,8 @@ void pollFXOS(void)
 }
 
 /**
- * Gets the X component of the pointing direction
+ * @brief Gets the X component of the pointing direction
+ * @return int of the magnetic force in the X direction from the last poll
  */
 int getMagX(void)
 {
@@ -136,7 +163,8 @@ int getMagX(void)
 }
 
 /**
- * Gets the Y component of the pointing direction
+ * @brief Gets the Y component of the pointing direction
+ * @return int of the magnetic force in the Y direction from the last poll
  */
 int getMagY(void)
 {
@@ -144,7 +172,8 @@ int getMagY(void)
 }
 
 /**
- * Gets the Z component of the pointing direction
+ * @brief Gets the Z component of the pointing direction
+ * @return int of the magnetic force in the Z direction from the last poll
  */
 int getMagZ(void)
 {
@@ -152,7 +181,8 @@ int getMagZ(void)
 }
 
 /**
- * Gets the X component of the acceleration
+ * @brief Gets the X component of the acceleration
+ * @return int of the force of acceleration in the X direction from the last poll
  */
 int getAccelX(void)
 {
@@ -160,7 +190,8 @@ int getAccelX(void)
 }
 
 /**
- * Gets the Y component of the acceleration
+ * @brief Gets the Y component of the acceleration
+ * @return int of the force of acceleration in the Y direction from the last poll
  */
 int getAccelY(void)
 {
@@ -168,21 +199,25 @@ int getAccelY(void)
 }
 
 /**
- * Gets the Z component of the acceleration
+ * @brief Gets the Z component of the acceleration
+ * @return int of the force of acceleration in the Z direction from the last poll
  */
 int getAccelZ(void)
 {
 	return (int) accelerometerBuffer.z;
 }
 
-//polls data from the realtime clock
+/**
+ * @brief Polls data from the real time clock
+ */
 void poll_rtcc(void)
 {
 	current_time = MCP79410_GetTime();
 }
 
 /**
- * Gets the year from the last time the RTCC was polled
+ * @brief Gets the year from the last time the RTCC was polled
+ * @return int of the current year from the last poll
  */
 int get_rtcc_year(void)
 {
@@ -190,7 +225,8 @@ int get_rtcc_year(void)
 }
 
 /**
- * Gets the month from the last time the RTCC was polled
+ * @brief Gets the month from the last time the RTCC was polled
+ * @return int of the current month from the last poll
  */
 int get_rtcc_month(void)
 {
@@ -198,7 +234,8 @@ int get_rtcc_month(void)
 }
 
 /**
- * Gets the date from the last time the RTCC was polled
+ * @brief Gets the date from the last time the RTCC was polled
+ * @return int of the current day from the last poll
  */
 int get_rtcc_date(void)
 {
@@ -206,7 +243,8 @@ int get_rtcc_date(void)
 }
 
 /**
- * Gets the hour from the last time the RTCC was polled
+ * @brief Gets the hour from the last time the RTCC was polled
+ * @return int of the current hour from the last poll
  */
 int get_rtcc_hour(void)
 {
@@ -214,7 +252,8 @@ int get_rtcc_hour(void)
 }
 
 /**
- * Gets the minute from the last time the RTCC was polled
+ * @brief Gets the minute from the last time the RTCC was polled
+ * @return int of the current minute from the last poll
  */
 int get_rtcc_minute(void)
 {
@@ -222,7 +261,8 @@ int get_rtcc_minute(void)
 }
 
 /**
- * Gets the second from the last time the RTCC was polled
+ * @brief Gets the second from the last time the RTCC was polled
+ * @return int of the current second from the last poll
  */
 int get_rtcc_second(void)
 {
@@ -230,7 +270,7 @@ int get_rtcc_second(void)
 }
 
 /**
- * Set the date/time on the RTCC.
+ * @brief Set the date/time on the RTCC.
  */
 void set_rtcc_datetime(int year, int month, int date, int w_day, int hour, int minute, int second)
 {
@@ -256,7 +296,7 @@ void set_rtcc_datetime(int year, int month, int date, int w_day, int hour, int m
 }
 
 /**
- * Set an alarm on the RTCC. As of now, only 1 is supported.
+ * @brief Set an alarm on the RTCC. As of now, only 1 is supported.
  */
 void set_rtcc_alarm(int year, int month, int date, int w_day, int hour, int minute, int second, int match_mode)
 {
@@ -297,29 +337,29 @@ void set_rtcc_alarm(int year, int month, int date, int w_day, int hour, int minu
 			break;
 	}
 	MCP79410_SetAlarmMFPPolarity(LOWPOL,RTCC_ZERO);
-	MCP79410_SetMFP_Functionality(ALARM_INTERRUPT);	 //Set alaram interrupt
+	MCP79410_SetMFP_Functionality(ALARM_INTERRUPT);	 //Set alarm interrupt
 }
 
 /**
- * Returns whether or not the alarm is triggered.
+ * @brief Check whether or not the alarm is triggered.
+ * @return an int boolean, 0 if not triggered
  */
 int poll_rtcc_alarm(void)
 {
-	//PinLevel_t pval;
 	AlarmStatus_t s = MCP79410_GetAlarmStatus(RTCC_ZERO); //Check alarm status
-	return (int) s;
+	return (int) s;  //Returns 0 if not triggered
 }
 
 /**
- * Turn off the alarm if it is triggered.
+ * @brief Turn off the alarm if it is triggered.
  */
 void reset_alarm(void)
 {
 	AlarmStatus_t s = MCP79410_GetAlarmStatus(RTCC_ZERO); //Check alarm status
 	
-	if ((int) s != 0)
+	if ((int) s != 0)  //If the alarm is triggered
 	{
-		MCP79410_ClearInterruptFlag(RTCC_ZERO);
-		MCP79410_DisableAlarm(RTCC_ZERO);
+		MCP79410_ClearInterruptFlag(RTCC_ZERO);  //Alarms trigger an interrupt so clear that
+		MCP79410_DisableAlarm(RTCC_ZERO);  //Turn off the alarm since it is confirmed to have triggered
 	}
 }
