@@ -76,7 +76,7 @@ def CheckEmail():
 	else:
 		LED_Off()
 		
-	time.sleep(MAIL_CHECK_FREQ)
+	time.sleep(MAIL_CHECK_PERIOD)
 
 if __name__ == "__main__":
 	LED_Setup()
