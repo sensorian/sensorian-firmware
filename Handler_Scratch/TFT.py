@@ -2,8 +2,8 @@
 
 import numbers
 import time
-import Image
-import ImageDraw
+from PIL import Image
+from PIL import ImageDraw
 import RPi.GPIO as GPIO
 import spidev as spi
 

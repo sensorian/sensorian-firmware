@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import Image
+from PIL import Image
 import TFT as display
 import sys
 import time

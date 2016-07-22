@@ -1,8 +1,8 @@
 #!/usr/bin/python
 import time 
-import Image
-import ImageDraw
-import ImageFont
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
 import TFT as GLCD
 import APDS9300 as LuxSens
 import math
